@@ -1,19 +1,19 @@
 {
   "name": "Yours Clinic Chat",
   "short_name": "鈺璽問診",
-  "start_url": "/",
+  "start_url": "/yoursclinic.chat/",
   "display": "standalone",
-  "scope": "/",
+  "scope": "/yoursclinic.chat/",
   "background_color": "#ffffff",
   "theme_color": "#085f79",
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "/yoursclinic.chat/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/yoursclinic.chat/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
