@@ -18,7 +18,6 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 const provider = new GoogleAuthProvider();
-// 只用「第一個字」決定欄位顯示順序，避免因字串差異導致排序失效
 const firstCharOrder = ['姓', '就', '情', '壓', '其', '既', '居', '物', '其', '初'];
 
 const loginBtn = document.getElementById('login-btn');
