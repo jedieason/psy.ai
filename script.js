@@ -338,7 +338,7 @@ function sendErrorReport(error) {
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('/yoursclinic.chat/sw.js')
       .then(reg => {
         console.log('Service Worker 註冊成功：', reg);
       })
