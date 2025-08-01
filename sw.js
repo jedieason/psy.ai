@@ -1,12 +1,12 @@
 const CACHE_NAME = 'yoursclinic-cache-v1';
 const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/offline.html',
-  '/styles.css',
-  '/script.js',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/yoursclinic.chat/',
+  '/yoursclinic.chat/index.html',
+  '/yoursclinic.chat/offline.html',
+  '/yoursclinic.chat/styles.css',
+  '/yoursclinic.chat/script.js',
+  '/yoursclinic.chat/icons/icon-192.png',
+  '/yoursclinic.chat/icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -53,7 +53,7 @@ self.addEventListener('fetch', (event) => {
           })
           .catch(() => {
             if (event.request.mode === 'navigate' || (event.request.headers.get('accept') || '').includes('text/html')) {
-              return caches.match('/offline.html');
+              return caches.match('/yoursclinic.chat/offline.html');
             }
           });
       })
