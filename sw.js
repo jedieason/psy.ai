@@ -2,7 +2,7 @@ const CACHE_NAME = 'yoursclinic-cache-v1';
 const PRECACHE_URLS = [
   '/yoursclinic.chat/index.html',
   '/yoursclinic.chat/offline.html',
-  '/yoursclinic.chat/styles.css',
+  '/yoursclinic.chat/style.css',
   '/yoursclinic.chat/script.js',
   '/yoursclinic.chat/icons/icon-192.png',
   '/yoursclinic.chat/icons/icon-512.png'
