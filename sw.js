@@ -1,6 +1,5 @@
 const CACHE_NAME = 'yoursclinic-cache-v1';
 const PRECACHE_URLS = [
-  '/yoursclinic.chat/',
   '/yoursclinic.chat/index.html',
   '/yoursclinic.chat/offline.html',
   '/yoursclinic.chat/styles.css',
@@ -12,7 +11,17 @@ const PRECACHE_URLS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(PRECACHE_URLS))
+      .then(async (cache) => {
+        for (const url of PRECACHE_URLS) {
+          try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            await cache.put(url, response);
+          } catch (err) {
+            console.error(`❌ 無法快取 ${url}`, err);
+          }
+        }
+      })
       .then(() => self.skipWaiting())
   );
 });
@@ -38,9 +47,8 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
       .then(cached => {
-        if (cached) {
-          return cached;
-        }
+        if (cached) return cached;
+
         return fetch(event.request)
           .then(response => {
             if (response && response.status === 200 && response.type === 'basic') {
@@ -52,7 +60,10 @@ self.addEventListener('fetch', (event) => {
             return response;
           })
           .catch(() => {
-            if (event.request.mode === 'navigate' || (event.request.headers.get('accept') || '').includes('text/html')) {
+            if (
+              event.request.mode === 'navigate' ||
+              (event.request.headers.get('accept') || '').includes('text/html')
+            ) {
               return caches.match('/yoursclinic.chat/offline.html');
             }
           });
