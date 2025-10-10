@@ -28,6 +28,7 @@ const contentSection = document.getElementById('content-section');
 const cardsContainer = document.getElementById('cards-container');
 const detailDiv = document.getElementById('detail');
 let openedId = null;
+let currentUserUid = null;
 
 function parseId(id) {
   const delimiter = id.includes('|') ? '|' : '｜';
@@ -85,11 +86,13 @@ logoutBtn.addEventListener('click', () => {
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
+    currentUserUid = user.uid;
     loginBox.style.display = 'none';
     contentSection.style.display = 'block';
     logoutBtn.style.display = 'inline-block';
-    loadReports();
+    loadReports(currentUserUid);
   } else {
+    currentUserUid = null;
     loginBox.style.display = 'flex';
     contentSection.style.display = 'none';
     logoutBtn.style.display = 'none';
@@ -99,8 +102,8 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-function loadReports() {
-  const reportsRef = ref(db, 'medical_reports');
+function loadReports(uid) {
+  const reportsRef = ref(db, 'medical_reports/' + uid);
   onValue(reportsRef, (snapshot) => {
     cardsContainer.innerHTML = '';
     const data = snapshot.val() || {};
@@ -140,7 +143,8 @@ function loadReports() {
       btn.addEventListener('click', () => {
         const id = btn.dataset.id;
         if (confirm('確定要刪除這筆資料嗎？')) {
-          remove(ref(db, 'medical_reports/' + id));
+          if (!currentUserUid) return;
+          remove(ref(db, 'medical_reports/' + currentUserUid + '/' + id));
         }
       });
     });
@@ -152,7 +156,8 @@ function attachNoteHandler(id) {
   if (!saveBtn) return;
   saveBtn.addEventListener('click', () => {
     const note = document.getElementById('note-text').value;
-    update(ref(db, 'medical_reports/' + id), { '備註': note })
+    if (!currentUserUid) return;
+    update(ref(db, 'medical_reports/' + currentUserUid + '/' + id), { '備註': note })
       .catch(err => console.error('備註更新失敗', err));
   });
 }
